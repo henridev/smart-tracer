@@ -1,5 +1,10 @@
 //#region IMPORTS
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
+import ROUTES from "../../routes/routes";
+import { Link } from "react-router-dom";
+import { Route } from "../../interfaces/route";
+import "./Navigator.css";
+
 import clsx from "clsx";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Drawer from "@material-ui/core/Drawer";
@@ -19,11 +24,12 @@ import ListItemText from "@material-ui/core/ListItemText";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import ListAltIcon from "@material-ui/icons/ListAlt";
-import ROUTES from "../../routes/routes";
-import { Link } from "react-router-dom";
+import { Collapse } from "@material-ui/core";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
 //#endregion
 
-const drawerWidth = 240;
+const DRAWERWIDTH = 240;
 
 //#region material styling
 const useStyles = makeStyles((theme) => ({
@@ -43,8 +49,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: "linear-gradient(to left, #fdddd , #ffcdd);",
   },
   appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
+    marginLeft: DRAWERWIDTH,
+    width: `calc(100% - ${DRAWERWIDTH}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -57,12 +63,12 @@ const useStyles = makeStyles((theme) => ({
     display: "none",
   },
   drawer: {
-    width: drawerWidth,
+    width: DRAWERWIDTH,
     flexShrink: 0,
     whiteSpace: "nowrap",
   },
   drawerOpen: {
-    width: drawerWidth,
+    width: DRAWERWIDTH,
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -76,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "hidden",
     width: theme.spacing(7) + 1,
     [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9) + 1,
+      width: theme.spacing(7) + 1,
     },
   },
   toolbar: {
@@ -92,17 +98,97 @@ const useStyles = makeStyles((theme) => ({
 }));
 //#endregion
 
+//#region prop-types
 type NavigatorProps = {
   children: any;
 };
+type RenderRouteLinkProps = { route: Route };
+type RenderRouteListProps = { routes: Route[]; level: number };
+type Dict = { [key: string]: boolean };
+//#endregion
 
 export default function Navigator(props: NavigatorProps) {
   const [open, setOpen] = useState(false);
+  const [isOpenTable, setisOpenTable] = useState(
+    ROUTES.reduce<Dict>((map, currRoute: Route) => {
+      const key = currRoute.key;
+      map[key] = false;
+      return map;
+    }, {})
+  );
+
   const classes = useStyles();
   const theme = useTheme();
 
   const handleDrawer = () => setOpen(!open);
+  const handleCollapseClick = (key: string) => {
+    setisOpenTable({ ...isOpenTable, [key]: !isOpenTable[key] });
+  };
   const handleLogout = () => {};
+
+  function RenderRouteLink({ route }: RenderRouteLinkProps) {
+    return (
+      <Link to={route.path}>
+        <ListItem button>
+          <ListItemIcon>
+            <ListAltIcon />
+          </ListItemIcon>
+          <ListItemText primary={route.displayName} />
+        </ListItem>
+      </Link>
+    );
+  }
+
+  /**
+   * called once in Navigator component for level 0 routes
+   * then recursively called for any nested routes
+   *
+   */
+  function RenderRouteList({ routes, level }: RenderRouteListProps) {
+    return (
+      <List>
+        {routes.map((route: Route, i: number) => {
+          const key: string = route.key;
+          const nestedRoutes = route.routes;
+          return nestedRoutes ? (
+            <Fragment key={i}>
+              <ListItem button onClick={() => handleCollapseClick(key)}>
+                <ListItemIcon>
+                  <ListAltIcon />
+                </ListItemIcon>
+                <ListItemText primary={route.displayName} />
+                {isOpenTable[key] ? <ExpandLess /> : <ExpandMore />}
+              </ListItem>
+              <Collapse in={isOpenTable[key]} timeout="auto" unmountOnExit>
+                <RenderRouteList routes={nestedRoutes} level={level++} />
+              </Collapse>
+            </Fragment>
+          ) : (
+            <RenderRouteLink key={i} route={route} />
+          );
+        })}
+      </List>
+    );
+  }
+
+  function RenderAccountLinks() {
+    return (
+      <List>
+        {["my profile", "logout"].map((text, index) => (
+          <ListItem button key={text}>
+            <ListItemIcon>
+              {index % 2 === 0 ? (
+                <AccountCircleIcon />
+              ) : (
+                <ExitToAppIcon onClick={handleLogout} />
+              )}
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+    );
+  }
 
   return (
     <div className={classes.root}>
@@ -126,7 +212,7 @@ export default function Navigator(props: NavigatorProps) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Welcome
+            Smart-trace RATP
           </Typography>
         </Toolbar>
       </AppBar>
@@ -153,35 +239,11 @@ export default function Navigator(props: NavigatorProps) {
           </IconButton>
         </div>
         <Divider />
-        <List>
-          {ROUTES.map((route, index) => (
-            <ListItem button key={index}>
-              <ListItemIcon>
-                <Link to={route.path}>
-                  <ListAltIcon />
-                </Link>
-              </ListItemIcon>
-              <ListItemText primary={route.key} />
-            </ListItem>
-          ))}
-        </List>
+        <RenderRouteList routes={ROUTES} level={0} />
         <Divider />
-        <List>
-          {["my profile", "logout"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? (
-                  <AccountCircleIcon />
-                ) : (
-                  <ExitToAppIcon onClick={handleLogout} />
-                )}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
+        <RenderAccountLinks />
       </Drawer>
-      <main className={classes.content}>{props.children}</main>
+      <main className={`${classes.content} content`}>{props.children}</main>
     </div>
   );
 }

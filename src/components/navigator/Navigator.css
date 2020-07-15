@@ -1,0 +1,16 @@
+.content {
+  margin-top: 56px;
+  padding: 1rem;
+}
+
+@media (min-width: 600px) {
+  .content {
+    margin-top: 64px;
+  }
+}
+
+@media (min-width: 0px) and (orientation: landscape) {
+  .content {
+    margin-top: 48px;
+  }
+}

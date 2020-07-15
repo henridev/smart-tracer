@@ -1,19 +1,42 @@
-import React from "react";
-import { Route as Route_, Switch } from "react-router-dom";
+//#region Imports
+import React, { ReactPropTypes } from "react";
+import { Route as RouteDom, Switch, Redirect } from "react-router-dom";
 import { Route } from "../interfaces/route";
 import Navigator from "../components/navigator/Navigator";
+import Login from "../components/auth/Login";
+//#endregion Imports
+
+interface RenderRoutesProps {
+  routes: Route[];
+}
+
+const authenticated = true;
 
 //#region routing config
 const ROUTES: Route[] = [
-  { path: "/", key: "ROOT", exact: true, Component: () => <h1>Login</h1> },
+  {
+    path: "/",
+    key: "ROOT",
+    displayName: "login",
+    exact: true,
+    Component: () => <Login />,
+  },
   {
     path: "/smart-tracer",
     key: "APP",
-    Component: RenderRoutes,
+    displayName: "smart-tracer",
+    Component: (props: RenderRoutesProps) => {
+      if (!authenticated) {
+        alert("You need to log in to access app routes");
+        return <Redirect to={"/"} />;
+      }
+      return <RenderRoutes {...props} routes={props.routes} />;
+    },
     routes: [
       {
         path: "/smart-tracer",
         key: "APP_ROOT",
+        displayName: "home",
         exact: true,
         Component: () => (
           <Navigator>
@@ -24,6 +47,7 @@ const ROUTES: Route[] = [
       {
         path: "/smart-tracer/page-1",
         key: "APP_PAGE_1",
+        displayName: "page 1",
         exact: true,
         Component: () => (
           <Navigator>
@@ -40,7 +64,7 @@ const ROUTES: Route[] = [
 function RouteWithSubRoutes(route: Route) {
   const { Component, path, exact, routes } = route;
   return (
-    <Route_
+    <RouteDom
       path={path}
       exact={exact}
       render={(props) => <Component {...props} routes={routes} />}
@@ -50,7 +74,7 @@ function RouteWithSubRoutes(route: Route) {
 //#endregion
 
 //#region renderer of all routes used in app
-export function RenderRoutes({ routes }: { routes: Route[] }) {
+export function RenderRoutes({ routes }: RenderRoutesProps) {
   return (
     <Switch>
       {routes.map((route, i) => (
@@ -61,7 +85,7 @@ export function RenderRoutes({ routes }: { routes: Route[] }) {
           Component={route.Component}
         />
       ))}
-      <Route_ component={() => <h1>404</h1>} />
+      <RouteDom component={() => <h1>404</h1>} />
     </Switch>
   );
 }
