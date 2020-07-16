@@ -18,3 +18,5 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+// npm run build && npm i serve -g && serve -s build
+// to test serviceworkers on localhost:5000

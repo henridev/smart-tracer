@@ -124,16 +124,15 @@ export default function Navigator(props: NavigatorProps) {
   const handleCollapseClick = (key: string) => {
     setisOpenTable({ ...isOpenTable, [key]: !isOpenTable[key] });
   };
-  const handleLogout = () => {};
+  const handleLogout = () => { };
 
   function RenderRouteLink({ route }: RenderRouteLinkProps) {
+    const Icon = route.Icon;
     return (
       <Link to={route.path}>
         <ListItem button>
-          <ListItemIcon>
-            <ListAltIcon />
-          </ListItemIcon>
-          <ListItemText primary={route.displayName} />
+          <ListItemIcon>{Icon ? <Icon /> : <ListAltIcon />}</ListItemIcon>
+          <ListItemText primary={route.key} />
         </ListItem>
       </Link>
     );
@@ -156,7 +155,7 @@ export default function Navigator(props: NavigatorProps) {
                 <ListItemIcon>
                   <ListAltIcon />
                 </ListItemIcon>
-                <ListItemText primary={route.displayName} />
+                <ListItemText primary={route.key} />
                 {isOpenTable[key] ? <ExpandLess /> : <ExpandMore />}
               </ListItem>
               <Collapse in={isOpenTable[key]} timeout="auto" unmountOnExit>
@@ -164,8 +163,8 @@ export default function Navigator(props: NavigatorProps) {
               </Collapse>
             </Fragment>
           ) : (
-            <RenderRouteLink key={i} route={route} />
-          );
+              <RenderRouteLink key={i} route={route} />
+            );
         })}
       </List>
     );
@@ -174,14 +173,14 @@ export default function Navigator(props: NavigatorProps) {
   function RenderAccountLinks() {
     return (
       <List>
-        {["my profile", "logout"].map((text, index) => (
+        {["profile", "logout"].map((text, index) => (
           <ListItem button key={text}>
             <ListItemIcon>
               {index % 2 === 0 ? (
                 <AccountCircleIcon />
               ) : (
-                <ExitToAppIcon onClick={handleLogout} />
-              )}
+                  <ExitToAppIcon onClick={handleLogout} />
+                )}
             </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
@@ -212,7 +211,7 @@ export default function Navigator(props: NavigatorProps) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap>
-            Smart-trace RATP
+            Smart-Tracer
           </Typography>
         </Toolbar>
       </AppBar>
@@ -234,8 +233,8 @@ export default function Navigator(props: NavigatorProps) {
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
             ) : (
-              <ChevronLeftIcon />
-            )}
+                <ChevronLeftIcon />
+              )}
           </IconButton>
         </div>
         <Divider />
