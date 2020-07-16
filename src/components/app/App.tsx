@@ -1,11 +1,14 @@
 import React from "react";
 import "./App.css";
 import ROUTES, { RenderRoutes } from "../../routes/routes";
+import Theme from "../../styles/Theme";
 
 function App() {
   return (
     <div id="app">
-      <RenderRoutes routes={ROUTES} />
+      <Theme>
+        <RenderRoutes routes={ROUTES} />
+      </Theme>
     </div>
   );
 }

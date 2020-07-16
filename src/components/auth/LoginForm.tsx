@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import "./LoginForm.css";
 import {
   makeStyles,
@@ -8,28 +8,10 @@ import {
   fade,
 } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
+
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import { FormControl, InputLabel, InputBase } from "@material-ui/core";
-
-const TxtField = withStyles((theme: Theme) => ({
-  root: {
-    margin: theme.spacing(1),
-    marginLeft: 0,
-    width: "100%",
-  },
-}))(TextField);
-
-const useStyles = makeStyles((theme: Theme) => ({
-  root: {
-    flexGrow: 1,
-    padding: theme.spacing(2),
-  },
-  margin: {
-    margin: theme.spacing(2),
-  },
-}));
 
 const Input = withStyles((theme: Theme) =>
   createStyles({
@@ -68,83 +50,55 @@ const Input = withStyles((theme: Theme) =>
   })
 )(InputBase);
 
-const useStyles2 = makeStyles((theme: Theme) => ({
-  root: {
-    margin: theme.spacing(2),
-    "& > *": {
-      margin: theme.spacing(2),
-      width: "25ch",
-    },
+const useStyles = makeStyles((theme: Theme) => ({
+  margin: {
+    marginTop: theme.spacing(2),
   },
 }));
 
 export default function LoginForm() {
-  const classes2 = useStyles2();
   const classes = useStyles();
 
   return (
-    <div className={classes.root}>
-      <Grid container item xs={12} justify="center">
-        <Grid container item xs={7} spacing={1} justify="center">
-          <div className={classes2.root}>
-            <Grid container xs={12}>
-              <Grid item>
-                <Typography variant="h5" component="h5" gutterBottom>
-                  Bienvenue sur <br />
-                  Smart Tracer
-                </Typography>
-                <Typography variant="subtitle1" gutterBottom>
-                  Merci de vous identifier
-                </Typography>
-              </Grid>
-            </Grid>
-          </div>
-        </Grid>
-        <Grid container item xs={7} spacing={1} justify="center">
-          <form className={classes2.root} noValidate autoComplete="off">
-            <Grid container xs={12}>
-              <Grid item>
-                <FormControl className={classes.margin}>
-                  <InputLabel shrink htmlFor="bootstrap-input">
-                    Identifiant
-                  </InputLabel>
-                  <Input id="bootstrap-input" />
-                </FormControl>
-                <FormControl className={classes.margin}>
-                  <InputLabel shrink htmlFor="bootstrap-input">
-                    Mot de passe
-                  </InputLabel>
-                  <Input id="bootstrap-input" />
-                </FormControl>
-              </Grid>
-              <Grid
-                className={classes.margin}
-                item
-                container
-                justify="space-between"
-              >
-                <Button
-                  size="small"
-                  variant="contained"
-                  style={{ textTransform: "none" }}
-                >
-                  Annuler
-                </Button>
-                <Button
-                  size="small"
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  style={{ textTransform: "none" }}
-                >
-                  Valider
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
-        </Grid>
+    <form noValidate autoComplete="off">
+      <Grid container alignItems="center" direction="column">
+        <FormControl>
+          <InputLabel shrink htmlFor="bootstrap-input">
+            Identifiant
+          </InputLabel>
+          <Input id="bootstrap-input" />
+        </FormControl>
+        <FormControl>
+          <InputLabel shrink htmlFor="bootstrap-input">
+            Mot de passe
+          </InputLabel>
+          <Input id="bootstrap-input" />
+        </FormControl>
       </Grid>
-      <Grid container item xs={12} justify="center"></Grid>
-    </div>
+      <Grid
+        className={classes.margin}
+        item
+        container
+        alignItems="center"
+        justify="space-between"
+      >
+        <Button
+          size="small"
+          variant="contained"
+          style={{ textTransform: "none" }}
+        >
+          Annuler
+        </Button>
+        <Button
+          size="small"
+          variant="contained"
+          color="primary"
+          type="submit"
+          style={{ textTransform: "none" }}
+        >
+          Valider
+        </Button>
+      </Grid>
+    </form>
   );
 }
