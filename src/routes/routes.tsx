@@ -1,4 +1,4 @@
-//#region Imports
+//#region IMPORTS
 import React from "react";
 import { Route as RouteDom, Switch, Redirect } from "react-router-dom";
 import { Route } from "../interfaces/route";
@@ -9,10 +9,7 @@ import Main from "../pages/Main";
 import Selection from "../pages/Selection";
 import Succes from "../pages/Success";
 import NotFound from "../pages/404";
-
-import HomeIcon from "@material-ui/icons/Home";
-import AssignmentIcon from "@material-ui/icons/Assignment";
-//#endregion Imports
+//#endregion
 
 interface RenderRoutesProps {
   routes: Route[];
@@ -65,6 +62,12 @@ const ROUTES: Route[] = [
       },
     ],
   },
+  {
+    path: "/login",
+    key: "LOGIN",
+    exact: true,
+    Component: () => <Redirect to={"/"} />,
+  },
 ];
 //#endregion
 
@@ -93,11 +96,6 @@ export function RenderRoutes({ routes }: RenderRoutesProps) {
           Component={route.Component}
         />
       ))}
-      <RouteDom
-        path="/login"
-        exact={true}
-        component={() => <Redirect to={"/"} />}
-      />
       <RouteDom component={() => <NotFound />} />
     </Switch>
   );

@@ -1,5 +1,4 @@
 import React from "react";
-import "./LoginForm.css";
 import {
   makeStyles,
   withStyles,
@@ -62,7 +61,7 @@ export default function LoginForm() {
     <form noValidate autoComplete="off">
       <Grid container alignItems="center" direction="column">
         <FormControl className={classes.control}>
-          <InputLabel shrink htmlFor="bootstrap-input">
+          <InputLabel error shrink htmlFor="bootstrap-input">
             Identifiant
           </InputLabel>
           <Input id="bootstrap-input" />
