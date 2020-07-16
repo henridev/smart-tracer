@@ -1,12 +1,17 @@
 //#region Imports
 import React from "react";
 import { Route as RouteDom, Switch, Redirect } from "react-router-dom";
+import { Route } from "../interfaces/route";
+
+import Login from "../pages/Login";
+import Confirmation from "../pages/Confirmation";
+import Main from "../pages/Main";
+import Selection from "../pages/Selection";
+import Succes from "../pages/Success";
+import NotFound from "../pages/404";
+
 import HomeIcon from "@material-ui/icons/Home";
 import AssignmentIcon from "@material-ui/icons/Assignment";
-import { Route } from "../interfaces/route";
-import Navigator from "../components/navigator/Navigator";
-import Login from "../components/auth/Login";
-
 //#endregion Imports
 
 interface RenderRoutesProps {
@@ -38,56 +43,25 @@ const ROUTES: Route[] = [
         path: "/smart-tracer",
         key: "APP_ROOT",
         exact: true,
-        Icon: (props: any) => <HomeIcon {...props} />,
-        Component: () => (
-          <Navigator>
-            <h1>App Index</h1>
-          </Navigator>
-        ),
+        Component: () => <Main />,
       },
       {
-        path: "/smart-tracer/qr-scanner",
-        key: "APP_QR_SCANNER",
+        path: "/smart-tracer/selection",
+        key: "APP_SELECTION",
         exact: true,
-        Icon: (props: any) => <AssignmentIcon {...props} />,
-        Component: () => (
-          <Navigator>
-            <h1>App Page</h1>
-          </Navigator>
-        ),
-      },
-      {
-        path: "/smart-tracer/picker",
-        key: "APP_PICKER",
-        exact: true,
-        Icon: (props: any) => <AssignmentIcon {...props} />,
-        Component: () => (
-          <Navigator>
-            <h1>App Page</h1>
-          </Navigator>
-        ),
+        Component: () => <Selection />,
       },
       {
         path: "/smart-tracer/confirmation",
         key: "APP_CONFIRM",
         exact: true,
-        Icon: (props: any) => <AssignmentIcon {...props} />,
-        Component: () => (
-          <Navigator>
-            <h1>App Page</h1>
-          </Navigator>
-        ),
+        Component: () => <Confirmation />,
       },
       {
         path: "/smart-tracer/succes",
         key: "APP_SUCCES",
         exact: true,
-        Icon: (props: any) => <AssignmentIcon {...props} />,
-        Component: () => (
-          <Navigator>
-            <h1>App Page</h1>
-          </Navigator>
-        ),
+        Component: () => <Succes />,
       },
     ],
   },
@@ -124,7 +98,7 @@ export function RenderRoutes({ routes }: RenderRoutesProps) {
         exact={true}
         component={() => <Redirect to={"/"} />}
       />
-      <RouteDom component={() => <h1>404</h1>} />
+      <RouteDom component={() => <NotFound />} />
     </Switch>
   );
 }

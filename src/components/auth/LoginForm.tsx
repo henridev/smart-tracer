@@ -1,6 +1,5 @@
 import React from "react";
-import "./Login.css";
-
+import "./LoginForm.css";
 import {
   makeStyles,
   withStyles,
@@ -25,14 +24,14 @@ const TxtField = withStyles((theme: Theme) => ({
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     flexGrow: 1,
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
   },
   margin: {
-    padding: theme.spacing(1),
+    margin: theme.spacing(2),
   },
 }));
 
-const BootstrapInput = withStyles((theme: Theme) =>
+const Input = withStyles((theme: Theme) =>
   createStyles({
     root: {
       "label + &": {
@@ -71,15 +70,15 @@ const BootstrapInput = withStyles((theme: Theme) =>
 
 const useStyles2 = makeStyles((theme: Theme) => ({
   root: {
-    margin: theme.spacing(1),
+    margin: theme.spacing(2),
     "& > *": {
-      margin: theme.spacing(1),
+      margin: theme.spacing(2),
       width: "25ch",
     },
   },
 }));
 
-export default function BasicTextFields() {
+export default function LoginForm() {
   const classes2 = useStyles2();
   const classes = useStyles();
 
@@ -105,24 +104,25 @@ export default function BasicTextFields() {
           <form className={classes2.root} noValidate autoComplete="off">
             <Grid container xs={12}>
               <Grid item>
-                <TxtField
-                  size="small"
-                  id="outlined-basic"
-                  label="Identifiant"
-                  variant="outlined"
-                  autoFocus
-                  required
-                />
-                <TxtField
-                  size="small"
-                  id="outlined-basic"
-                  label="Mot de passe"
-                  variant="outlined"
-                  required
-                  type="password"
-                />
+                <FormControl className={classes.margin}>
+                  <InputLabel shrink htmlFor="bootstrap-input">
+                    Identifiant
+                  </InputLabel>
+                  <Input id="bootstrap-input" />
+                </FormControl>
+                <FormControl className={classes.margin}>
+                  <InputLabel shrink htmlFor="bootstrap-input">
+                    Mot de passe
+                  </InputLabel>
+                  <Input id="bootstrap-input" />
+                </FormControl>
               </Grid>
-              <Grid item container justify="space-between">
+              <Grid
+                className={classes.margin}
+                item
+                container
+                justify="space-between"
+              >
                 <Button
                   size="small"
                   variant="contained"
@@ -139,24 +139,6 @@ export default function BasicTextFields() {
                 >
                   Valider
                 </Button>
-                <FormControl className={classes.margin}>
-                  <InputLabel shrink htmlFor="bootstrap-input">
-                    Identifiant
-                  </InputLabel>
-                  <BootstrapInput
-                    defaultValue="react-bootstrap"
-                    id="bootstrap-input"
-                  />
-                </FormControl>
-                <FormControl className={classes.margin}>
-                  <InputLabel shrink htmlFor="bootstrap-input">
-                    Identifiant
-                  </InputLabel>
-                  <BootstrapInput
-                    defaultValue="react-bootstrap"
-                    id="bootstrap-input"
-                  />
-                </FormControl>
               </Grid>
             </Grid>
           </form>
