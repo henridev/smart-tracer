@@ -86,12 +86,15 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       flexGrow: 1,
-      margin: theme.spacing(2),
+      margin: theme.spacing(1),
       padding: theme.spacing(2),
-      border: `2px solid ${theme.palette.primary.main}`,
+      border: `5px solid ${theme.palette.primary.main}`,
+    },
+    container: {
+      width: "inherit",
     },
     control: {
-      padding: theme.spacing(2),
+      marginTop: theme.spacing(4),
     },
   })
 );
@@ -109,7 +112,10 @@ export default function SpacingGrid() {
       container
       alignItems="center"
       direction="column"
-      className={classes.root}
+      classes={{
+        root: classes.root,
+        container: classes.container,
+      }}
     >
       <Grid item xs={12}>
         <Grid item>
@@ -121,7 +127,7 @@ export default function SpacingGrid() {
             Merci de vous identifier
           </Typography>
         </Grid>
-        <Grid item>
+        <Grid item className={classes.control}>
           <LoginForm />
         </Grid>
       </Grid>

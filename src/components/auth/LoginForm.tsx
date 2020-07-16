@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import "./LoginForm.css";
 import {
   makeStyles,
@@ -7,7 +7,6 @@ import {
   Theme,
   fade,
 } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
@@ -51,7 +50,7 @@ const Input = withStyles((theme: Theme) =>
 )(InputBase);
 
 const useStyles = makeStyles((theme: Theme) => ({
-  margin: {
+  control: {
     marginTop: theme.spacing(2),
   },
 }));
@@ -62,13 +61,13 @@ export default function LoginForm() {
   return (
     <form noValidate autoComplete="off">
       <Grid container alignItems="center" direction="column">
-        <FormControl>
+        <FormControl className={classes.control}>
           <InputLabel shrink htmlFor="bootstrap-input">
             Identifiant
           </InputLabel>
           <Input id="bootstrap-input" />
         </FormControl>
-        <FormControl>
+        <FormControl className={classes.control}>
           <InputLabel shrink htmlFor="bootstrap-input">
             Mot de passe
           </InputLabel>
@@ -76,21 +75,16 @@ export default function LoginForm() {
         </FormControl>
       </Grid>
       <Grid
-        className={classes.margin}
+        className={classes.control}
         item
         container
         alignItems="center"
         justify="space-between"
       >
-        <Button
-          size="small"
-          variant="contained"
-          style={{ textTransform: "none" }}
-        >
+        <Button variant="contained" style={{ textTransform: "none" }}>
           Annuler
         </Button>
         <Button
-          size="small"
           variant="contained"
           color="primary"
           type="submit"
